@@ -61,5 +61,9 @@ server.post('/', (req, res) => {
   );
 });
 
+server.get('/health', (req, res) => {
+  res.send('OK');
+});
+
 console.log('Listening on port 8080');
 server.listen(8080);

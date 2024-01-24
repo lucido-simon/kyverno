@@ -16,5 +16,9 @@ server.post('/', (req, res) => {
     });
 });
 
+server.get('/health', (req, res) => {
+  res.send('OK');
+});
+
 console.log('Listening on port 3000');
 server.listen(3000);
