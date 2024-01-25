@@ -30,8 +30,6 @@ podLabels:
   app.leo.petemoilecul.io/name: "true"
 
 podSecurityContext: 
-  level: restricted
-  version: latest
   seccompProfile:
     type: RuntimeDefault
   # fsGroup: 2000

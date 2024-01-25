@@ -82,26 +82,39 @@ resource "kubernetes_namespace" "application" {
 
 resource "kubernetes_manifest" "resource_policy" {
   manifest   = yamldecode(file("${path.module}/../policies/resource-policy.yaml"))
-  depends_on = [helm_release.kyverno_polices]
+  depends_on = [helm_release.kyverno_polices, helm_release.kyverno]
 }
 
 resource "kubernetes_manifest" "pods-label" {
   manifest   = yamldecode(file("${path.module}/../policies/pods-label.yaml"))
-  depends_on = [helm_release.kyverno_polices]
+  depends_on = [helm_release.kyverno_polices, helm_release.kyverno]
 }
 
 resource "kubernetes_manifest" "restricted-pod-security" {
   manifest   = yamldecode(file("${path.module}/../policies/restricted-pod-security.yaml"))
-  depends_on = [helm_release.kyverno_polices]
+  depends_on = [helm_release.kyverno_polices, helm_release.kyverno]
 }
 
 resource "kubernetes_manifest" "disable-default-namespace" {
   manifest   = yamldecode(file("${path.module}/../policies/disallow-default-namespace.yaml"))
-  depends_on = [helm_release.kyverno_polices]
+  depends_on = [helm_release.kyverno_polices, helm_release.kyverno]
 }
 
 resource "kubernetes_manifest" "pull-policy-always" {
   manifest   = yamldecode(file("${path.module}/../policies/pull-policy-always.yaml"))
-  depends_on = [helm_release.kyverno_polices]
+  depends_on = [helm_release.kyverno_polices, helm_release.kyverno]
 }
 
+resource "helm_release" "vulnerable_frontend" {
+  name       = "vulnerable-frontend"
+  namespace  = "application"
+  repository = "${path.module}/../vulnerable_frontend"
+  chart      = "helm"
+}
+
+resource "helm_release" "vulnerable_backend" {
+  name       = "vulnerable-backend"
+  namespace  = "application"
+  repository = "${path.module}/../vulnerable_backend"
+  chart      = "helm"
+}
